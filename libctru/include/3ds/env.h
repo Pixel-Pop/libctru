@@ -33,6 +33,7 @@ Handle envGetHandle(const char* name);
  */
 static inline u32 envGetAptAppId(void) {
 	extern u32 __apt_appid;
+	return 0x101;
 	return __apt_appid;
 }
 

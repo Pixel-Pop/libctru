@@ -194,13 +194,13 @@ Result aptInit(void)
 
 	if (AtomicPostIncrement(&aptRefCount)) return 0;
 
+	APT_AppletAttr attr;
 	// Retrieve APT lock
-	ret = APT_GetLockHandle(0x0, &aptLockHandle);
+	ret = APT_GetLockHandle(0x20000002, &attr, &aptLockHandle);
 	if (R_FAILED(ret)) goto _fail;
 	if (aptIsCrippled()) return 0;
 
 	// Initialize APT
-	APT_AppletAttr attr = aptMakeAppletAttr(APTPOS_APP, false, false);
 	ret = APT_Initialize(envGetAptAppId(), attr, &aptEvents[0], &aptEvents[1]);
 	if (R_FAILED(ret)) goto _fail2;
 
@@ -858,15 +858,17 @@ void aptLaunchLibraryApplet(NS_APPID appId, void* buf, size_t bufsize, Handle ha
 	aptSetSleepAllowed(sleep);
 }
 
-Result APT_GetLockHandle(u16 flags, Handle* lockHandle)
+Result APT_GetLockHandle(u32 flags, APT_AppletAttr* attr, Handle* lockHandle)
 {
 	u32 cmdbuf[16];
 	cmdbuf[0]=IPC_MakeHeader(0x1,1,0); // 0x10040
 	cmdbuf[1]=flags;
 
 	Result ret = aptSendCommand(cmdbuf);
-	if (R_SUCCEEDED(ret))
+	if (R_SUCCEEDED(ret)) {
+		if (attr) *attr = cmdbuf[2];
 		*lockHandle = cmdbuf[5];
+	}
 
 	return ret;
 }

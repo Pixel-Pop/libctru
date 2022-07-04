@@ -43,7 +43,7 @@ typedef enum {
 	APTPOS_RESIDENT = 4,  ///< Resident applet.
 } APT_AppletPos;
 
-typedef u8 APT_AppletAttr;
+typedef u32 APT_AppletAttr;
 
 struct PtmWakeEvents;
 
@@ -245,7 +245,7 @@ void aptSetChainloaderToSelf(void);
  * @param flags Flags to use.
  * @param lockHandle Pointer to output the lock handle to.
  */
-Result APT_GetLockHandle(u16 flags, Handle* lockHandle);
+Result APT_GetLockHandle(u32 flags, APT_AppletAttr* attr, Handle* lockHandle);
 
 /**
  * @brief Initializes an application's registration with APT.

@@ -45,8 +45,8 @@ Result hidInit(void)
 	if (AtomicPostIncrement(&hidRefCount)) return 0;
 
 	// Request service.
-	ret = srvGetServiceHandle(&hidHandle, "hid:USER");
-	if (R_FAILED(ret)) ret = srvGetServiceHandle(&hidHandle, "hid:SPVR");
+	ret = srvGetServiceHandle(&hidHandle, "hid:SPVR");
+	if (R_FAILED(ret)) ret = srvGetServiceHandle(&hidHandle, "hid:USER");
 	if (R_FAILED(ret)) goto cleanup0;
 
 	// Get sharedmem handle.
