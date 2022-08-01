@@ -136,6 +136,17 @@ typedef struct tag_aptHookCookie
 /// APT message callback.
 typedef void (*aptMessageCb)(void* user, NS_APPID sender, void* msg, size_t msgsize);
 
+typedef enum
+{
+	TR_ENABLE = 0x62,
+	TR_JUMPTOMENU = 0x0E,
+	TR_SYSAPPLET = 0x05,
+	TR_LIBAPPLET = 0x04,
+	TR_CANCELLIB = 0x03,
+	TR_CLOSEAPP = 0x09,
+	TR_APPJUMP = 0x12,
+} APT_Transition;
+
 /// Initializes APT.
 Result aptInit(void);
 
@@ -147,6 +158,8 @@ void aptExit(void);
  * @param aptcmdbuf Pointer to command buffer (should have capacity for at least 16 words).
  */
 Result aptSendCommand(u32* aptcmdbuf);
+
+APT_Command aptWaitForWakeUp(APT_Transition transition);
 
 /// Returns true if the application is currently in the foreground.
 bool aptIsActive(void);
